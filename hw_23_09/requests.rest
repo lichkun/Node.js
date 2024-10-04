@@ -1,0 +1,16 @@
+GET http://localhost:3000/products HTTP/1.1
+
+###
+GET http://localhost:3000/products/12a123 HTTP/1.1
+
+###
+GET http://localhost:3000/products/2 HTTP/1.1
+
+###
+POST http://localhost:3000/products/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "keybord",
+  "price": 4000
+}
