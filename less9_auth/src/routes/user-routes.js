@@ -16,6 +16,24 @@ userRoutes.get("/user/logout", (req,res)=>{
   res.redirect("/")
 })
 
+let users= [];
+userRoutes.post("/user/signin", (req, res) => {
+  const { login,password } = req.body;
+
+  const user = users.find(u=> u.login == login && u.password ==password);
+  if(user){
+    req.session.user = { login, password };
+    res.cookie("user", login, {
+      httpOnly: true,
+      maxAge: 1000000,
+    }); 
+    res.redirect("/");
+  }
+  else{
+    console.log('Пользователь с таким логином и паролем не найден.');
+  }
+ 
+});
 userRoutes.post("/user/signup", (req, res) => {
   const { login, email, password, confirm_password } = req.body;
 
@@ -31,7 +49,7 @@ userRoutes.post("/user/signup", (req, res) => {
     return res.status(400).send("Passwords do not match.");
   }
 
-  users.push({ login, email, password: hash });
+  users.push({ login, email, password: password });
 
   req.session.user = { login, email };
   res.cookie("user", login, {
